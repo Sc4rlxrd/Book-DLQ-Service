@@ -1,26 +1,10 @@
 spring:
   application:
     name: book-dlq-service
-
-  datasource:
-    url: jdbc:h2:mem:book_dlq_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  data:
+    mongodb:
+      uri: mongodb://admin:123@localhost:27017/book_dlq_db?authSource=admin
+      auto-index-creation: true
 
 server:
-  port: 8082 # diferente do book-service
-
+  port: 8082
