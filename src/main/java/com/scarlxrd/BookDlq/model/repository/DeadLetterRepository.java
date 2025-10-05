@@ -1,9 +1,9 @@
 package com.scarlxrd.BookDlq.model.repository;
 
 import com.scarlxrd.BookDlq.model.entity.DeadLetterMessage;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.UUID;
 
-public interface DeadLetterRepository extends JpaRepository<DeadLetterMessage, UUID> {
+
+public interface DeadLetterRepository extends MongoRepository<DeadLetterMessage, String> {
 }

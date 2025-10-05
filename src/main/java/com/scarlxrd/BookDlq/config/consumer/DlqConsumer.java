@@ -7,6 +7,7 @@ import com.scarlxrd.BookDlq.model.entity.DeadLetterMessage;
 import com.scarlxrd.BookDlq.model.repository.DeadLetterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
@@ -27,17 +28,23 @@ public class DlqConsumer {
     }
 
     @RabbitListener(queues = RabbitMQDlqConfig.DLQ_NAME)
-    public void consume(ClientRequestDTO clientRequestDTO) {
+    public void consume(ClientRequestDTO clientRequestDTO, Message message) {
         String payload = "";
         try {
+
             // Converte para JSON com pretty print
             payload = objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(clientRequestDTO);
 
+           // Recupera o motivo da falha enviado pela aplicação principal via header
+            String reason = (String) message.getMessageProperties()
+                    .getHeaders()
+                    .getOrDefault("x-reason", "Processamento falhou no book-service-api");
+
             // Persistência no banco
             DeadLetterMessage deadLetter = DeadLetterMessage.builder()
                     .payload(payload)
-                    .reason("Processamento falhou no book-service-api")
+                    .reason(reason)
                     .receivedAt(LocalDateTime.now())
                     .build();
             repository.save(deadLetter);
@@ -47,6 +54,7 @@ public class DlqConsumer {
                     "event", "dlq_message",
                     "payload", clientRequestDTO,
                     "status", "SUCCESS",
+                    "reason", reason,
                     "timestamp", LocalDateTime.now().format(formatter)
             );
             String logPretty = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(logMap);

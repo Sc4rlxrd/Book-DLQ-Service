@@ -1,13 +1,13 @@
 package com.scarlxrd.BookDlq.model.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "dead_letter_messages")
+@Document(collection = "dead_letter_messages")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,13 +15,9 @@ import java.util.UUID;
 @Builder
 public class DeadLetterMessage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @MongoId
+    private String id;
     private String payload;
-    @Column(nullable = false)
     private String reason; // guardar motivo
-    @Column(nullable = false)
     private LocalDateTime receivedAt;
 }
