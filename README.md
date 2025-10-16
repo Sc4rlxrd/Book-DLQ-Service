@@ -14,7 +14,7 @@ O serviço utiliza RabbitMQ como broker de mensagens e H2 como banco de dados em
 - Spring Boot 3.5.6
 - Spring AMQP (RabbitMQ)
 - Spring Data JPA
-- H2 Database (runtime)
+- MongoDB
 - Lombok
 - Maven
 
@@ -23,7 +23,7 @@ O serviço utiliza RabbitMQ como broker de mensagens e H2 como banco de dados em
 ## Funcionalidades
 
 - Consumir mensagens da fila de DLQ (`book-dlq`) configurada no RabbitMQ.
-- Persistir mensagens com falha no banco de dados H2.
+- Persistir mensagens com falha no banco de dados.
 - Logar mensagens processadas, incluindo status de sucesso ou falha.
 - Serializar payloads em JSON formatado para fácil leitura.
 
