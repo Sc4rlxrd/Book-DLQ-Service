@@ -3,8 +3,13 @@ spring:
     name: book-dlq-service
   data:
     mongodb:
-      uri: mongodb://admin:123@localhost:27017/book_dlq_db?authSource=admin
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://admin:123@mongo:27017/book_dlq_db?authSource=admin}
       auto-index-creation: true
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
 
 server:
   port: 8082
