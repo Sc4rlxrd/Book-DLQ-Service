@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Document(collection = "dead_letter_messages")
 @Getter
